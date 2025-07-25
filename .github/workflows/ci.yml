@@ -1,13 +1,13 @@
-on:
-  push:
-    paths:
-      - 'services/lego-service/**'
+# on:
+#   push:
+#     paths:
+#       - 'services/lego-service/**'
 
-jobs:
-    build:
-        name: test
-        runs-on: ubuntu-latest
+# jobs:
+#     build:
+#         name: test
+#         runs-on: ubuntu-latest
 
-        # steps:
-        #     - name: Checkout Code
-        #     - uses: actions/checkout@v4   
+#         # steps:
+#         #     - name: Checkout Code
+#         #     - uses: actions/checkout@v4   
