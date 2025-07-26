@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getAllSets } from "../service/setsService"
+import { getAllSets } from "../services/setsService"
 
 export const getSets = async (req: Request, res: Response) => {
     const { themeId, year } = req.query

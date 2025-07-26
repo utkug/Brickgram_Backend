@@ -1,17 +1,45 @@
 import { Request, Response } from "express"
-import { createUser, getUserByUsername } from "../services/userService"
+import { createUser, getUserByEmail, getUserByUsername } from "../services/userService"
 import { CreateUserInput } from "../models/models"
+import { successResponse } from "../middlewares/responseFormatter"
 
 
-export const getUserByUsernameHandler = async (req: Request, res: Response) => {
-    const username = req.params['username']
-    const user = await getUserByUsername(username)
-    if(!user) return res.status(404).json({message: "User not found"})
-    res.json(user)
+// GET /users?username=utku || /users?email=utku@example.com
+export const getUserHandler = async (req: Request, res: Response) => {
+    try {
+        const { username, email } = req.query
+        let user
+        if (username) user = await getUserByUsername(username as string)
+        else if (email) user = await getUserByEmail(email as string)
+        else return res.status(400).json({message: "username or email is required"})
+
+        if (!user) return res.status(404).json({message: "User not found"})
+
+        return successResponse(res, 200, user)
+        //res.status(200).json(user)
+
+    } catch (error) {
+        res.status(500).json({error: error})
+    }
 }
 
 export const createUserHandler = async (req: Request, res: Response) => {
-    const user: CreateUserInput = req.body
-    const createdUser = await createUser(user)
-    res.status(201).json(user) 
+    try {
+        const user: CreateUserInput = req.body
+        const createdUser = await createUser(user)
+
+        const { password, ...userWithoutPassword } = createdUser
+        res.status(201).json(userWithoutPassword)
+    }
+    catch (err) {
+        res.status(500).json({message: "Could not create user", error: err})
+    }
+}
+
+export const updateUserHandler = async (req: Request, res: Response) => {
+    try {
+        
+    } catch (error) {
+        res.status(500).json({message: "not", error: error})
+    }
 }

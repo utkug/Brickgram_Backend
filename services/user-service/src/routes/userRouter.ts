@@ -1,11 +1,14 @@
 import { Router } from "express"
-import { createUserHandler, getUserByUsernameHandler } from "../controllers/userController"
+import { createUserHandler, getUserHandler} from "../controllers/userController"
 
 
 const router = Router()
-
-router.get('/:username', getUserByUsernameHandler)
+// .../api/users/...
+// router.get('/username/:username', getUserByUsernameHandler)
+// router.get('/email/:email', getUserByEmailHandler)
+router.get('/', getUserHandler) // api/users?username=utku or api/users?email=utku@example.com
 router.post('/', createUserHandler)
+//router.put('/',) Update User
 
 
 export default router

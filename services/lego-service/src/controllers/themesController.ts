@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getAllThemes } from "../service/themesService" 
+import { getAllThemes } from "../services/themesService" 
 
 export const getThemes = async (req: Request, res: Response) => {
     const themes = await getAllThemes()
