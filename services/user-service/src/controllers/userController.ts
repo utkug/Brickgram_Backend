@@ -1,7 +1,8 @@
 import { Request, Response } from "express"
-import { createUser, getUserByEmail, getUserByUsername } from "../services/userService"
+import { createUser, getUserByEmail, getUserByUsername, updateUser } from "../services/userService"
 import { CreateUserInput } from "../models/models"
 import { successResponse } from "../middlewares/responseFormatter"
+import { AuthenticatedRequest } from "../middlewares/authMiddleware"
 
 
 // GET /users?username=utku || /users?email=utku@example.com
@@ -36,9 +37,15 @@ export const createUserHandler = async (req: Request, res: Response) => {
     }
 }
 
-export const updateUserHandler = async (req: Request, res: Response) => {
+export const updateUserHandler = async (req: AuthenticatedRequest, res: Response) => {
     try {
-        
+        const userId = req.user?.id!
+        const updateData = req.body
+
+        const updatedUser = await updateUser(userId, updateData)
+
+        return successResponse(res, 200, updatedUser, "User updated successfully")
+
     } catch (error) {
         res.status(500).json({message: "not", error: error})
     }

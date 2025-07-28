@@ -33,10 +33,10 @@ export const createUser = async (data: CreateUserInput) => {
     })
 }
 
-export const updateUser = async (data: UpdateUserInput) => {
+export const updateUser = async (userId: number, data: UpdateUserInput) => {
     return await prisma.users.update({
         where: {
-            email: data.email
+            id: userId
         },
         data: {
             ...data

@@ -1,9 +1,10 @@
 import express from 'express'
 import router from './routes/themesRoutes'
+import dotenv from 'dotenv'
+import cors from 'cors'
 import setsRouter from './routes/setsRoutes'
-const cors = require('cors')
-require('dotenv').config()
 
+dotenv.config()
 
 const app = express()
 
