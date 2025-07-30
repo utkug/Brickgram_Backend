@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  lego-service:
+    build: ./services/lego-service
+    ports:
+        - "3001:4001" 
+    # Computer Port - Docker Port
+    # portNumberYouWant:portinside
+    env_file:
+        - ./services/lego-service/.env
+    depends_on:
+        - db-lego
+  user-service:
+    build: ./services/user-service
+    ports:
+        - "3002:4002" 
+    env_file:
+        - ./services/user-service/.env
+    depends_on:
+      - db-user
+  auth-service:
+    build: ./services/auth-service
+    ports:
+        - "3003:4003" 
+    env_file:
+        - ./services/auth-service/.env
+    depends_on:
+      - db-user
+  db-user:
+    image: mysql:8
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: brickgram_user
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-user-data:/var/lib/mysql
+  db-lego:
+    image: mysql:8
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: lego
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-lego-data:/var/lib/mysql
+
+volumes:
+  mysql-user-data:
+  mysql-lego-data:

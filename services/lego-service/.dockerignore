@@ -1,0 +1,2 @@
+# When we run COPY . ., copies everything except here 
+node_modules
