@@ -34,7 +34,7 @@ enum Role {
   USER
   ADMIN
 }
-enum Status{
+enum Status {
   ACTIVE
   INACTIVE
   SUSPENDED
