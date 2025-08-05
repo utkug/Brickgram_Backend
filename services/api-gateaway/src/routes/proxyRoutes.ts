@@ -25,4 +25,12 @@ export const useProxies = (app: Express) => {
             return proxtReqOpts
         }
     }))
+
+    app.use('/follow', proxy('http://localhost:3004', {
+        proxyReqOptDecorator: (proxtReqOpts, srcReq) => {
+            proxtReqOpts.headers['x-user-id'] = srcReq.user?.id
+            return proxtReqOpts
+        }
+    }))
+
 } 
