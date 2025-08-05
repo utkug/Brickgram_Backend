@@ -24,7 +24,7 @@ export const authenticate = (req: AuthenticatedRequest, res: Response, next: Nex
     }
 
     const token = authHeader.split(' ')[1] //JWT Token
-    const JWT_SECRET = process.env.JWT_SECRET || "KOCHAMCIEMAGDALENA"
+    const JWT_SECRET = process.env.JWT_SECRET || "defaultsecret"
     try {
         const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload1
         req.user = decoded

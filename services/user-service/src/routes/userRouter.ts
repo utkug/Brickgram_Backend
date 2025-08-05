@@ -9,7 +9,7 @@ const router = Router()
 // router.get('/email/:email', getUserByEmailHandler)
 router.get('/', getUserHandler) // api/users?username=utku or api/users?email=utku@example.com
 router.post('/', createUserHandler)
-router.put('/', authenticate, updateUserHandler)
-
+//router.put('/', authenticate, updateUserHandler)
+router.put('/', updateUserHandler)
 
 export default router
