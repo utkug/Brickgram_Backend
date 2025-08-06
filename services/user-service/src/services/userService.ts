@@ -1,7 +1,8 @@
-import { prisma } from "../lib/prisma"
-import { CreateUserInput, UpdateUserInput, User } from "../models/models"
+import { CreateUserInput, UpdateUserInput} from "../models/models"
 import bcrypt from 'bcrypt'
+import { PrismaClient } from "@brickgram/shared-prisma"
 
+const prisma = new PrismaClient()
 
 export const getUserByUsername = async (username: string) => {
     return await prisma.users.findUnique({
@@ -19,7 +20,26 @@ export const getUserByEmail = async (email: string) => {
     })
 }
 
-export const searchUsersByUsername = async (query: string) => {
+export const getUserById = async (id: string) => {
+    return await prisma.users.findUnique({
+        where: {
+            id
+        }
+    })
+}
+
+export const searchUsersByUsername = async (query: string, take: number) => {
+    return await prisma.users.findMany({
+        where: {
+            username: {
+                contains: query
+            }
+        },
+        omit: {
+            password: true
+        },
+        take: take
+    })
 }
 
 export const createUser = async (data: CreateUserInput) => {
@@ -33,7 +53,7 @@ export const createUser = async (data: CreateUserInput) => {
     })
 }
 
-export const updateUser = async (userId: number, data: UpdateUserInput) => {
+export const updateUser = async (userId: string, data: UpdateUserInput) => {
     return await prisma.users.update({
         where: {
             id: userId

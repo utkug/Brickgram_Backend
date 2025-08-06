@@ -1,26 +1,45 @@
 import { Request, Response } from "express"
-import { createUser, getUserByEmail, getUserByUsername, updateUser } from "../services/userService"
+import { createUser, getUserByEmail, getUserByUsername, searchUsersByUsername, updateUser } from "../services/userService"
 import { CreateUserInput } from "../models/models"
-import { successResponse } from "../middlewares/responseFormatter"
-import { AuthenticatedRequest } from "../middlewares/authMiddleware"
 
-
-// GET /users?username=utku || /users?email=utku@example.com
-export const getUserHandler = async (req: Request, res: Response) => {
+export const getUserByEmailHandler = async (req: Request, res: Response) => {
     try {
-        const { username, email } = req.query
-        let user
-        if (username) user = await getUserByUsername(username as string)
-        else if (email) user = await getUserByEmail(email as string)
-        else return res.status(400).json({message: "username or email is required"})
-
-        if (!user) return res.status(404).json({message: "User not found"})
-
-        return successResponse(res, 200, user)
-        //res.status(200).json(user)
-
+        const userEmail = req.params.email
+        const user = await getUserByEmail(userEmail)
+        res.status(200).json(user)
     } catch (error) {
-        res.status(500).json({error: error})
+        res.status(500).json({message: "failed", error: error})
+    }
+}
+
+export const getUserByUsernameHandler = async (req: Request, res: Response) => {
+    try {
+        const username = req.params.username
+        const user = await getUserByEmail(username)
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json({message: "failed", error: error})
+    }
+}
+
+export const getUserByIdHandler = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.id
+        const user = await getUserByEmail(id)
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json({message: "failed", error: error})
+    }
+}
+
+export const searchUsersByUsernameHandler = async (req: Request, res: Response) => {
+    try {
+        const username = req.query.q as string
+        const take = Number(req.query.take)
+        const users = await searchUsersByUsername(username, take)
+        res.status(200).json(users)
+    } catch (error) {
+        res.status(500).json({message: "failed", error: error})
     }
 }
 
@@ -37,14 +56,13 @@ export const createUserHandler = async (req: Request, res: Response) => {
     }
 }
 
-export const updateUserHandler = async (req: AuthenticatedRequest, res: Response) => {
+export const updateUserHandler = async (req: Request, res: Response) => {
     try {
-        const userId = req.user?.id!
+        const userId = (req as any).user?.id
         const updateData = req.body
 
         const updatedUser = await updateUser(userId, updateData)
-
-        return successResponse(res, 200, updatedUser, "User updated successfully")
+        res.status(200).json(updatedUser)
 
     } catch (error) {
         res.status(500).json({message: "not", error: error})

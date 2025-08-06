@@ -8,6 +8,4 @@ RUN npm install
 
 COPY . .
 
-RUN npx prisma generate
-
 CMD [ "npx" , "tsx", "src/index.ts"]
