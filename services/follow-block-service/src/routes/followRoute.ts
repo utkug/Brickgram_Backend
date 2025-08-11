@@ -1,12 +1,13 @@
 import { Router } from "express"
-import { followUser, unfollowUser } from "../controllers/followController"
+import { followUser, getFollowByIdHandler, getUserFollowsHandler, unfollowUser } from "../controllers/followController"
 
 const followRouter = Router()
 
-followRouter.get('/:followId')
-followRouter.get('/user/userId')
-followRouter.post('/', followUser)
-followRouter.delete('/:followId', unfollowUser)
+// localhost:3000/api/follow/...
+followRouter.get('/:followId', getFollowByIdHandler)
+followRouter.get('/user/:userId', getUserFollowsHandler)
+followRouter.post('/:followingId', followUser)
+followRouter.delete('/:followingId', unfollowUser)
 
 
 export default followRouter

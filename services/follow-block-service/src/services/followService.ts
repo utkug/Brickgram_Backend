@@ -28,10 +28,13 @@ export const createUserFollow = async (followerId: string, followingId: string) 
     })
 }
 
-export const deleteUserFollow = async (followId: string) => {
+export const deleteUserFollow = async (followerId: string, followingId: string) => {
     return await prisma.follows.delete({
         where: {
-            id: followId
+            follower_id_following_id: {
+                follower_id: followerId,
+                following_id: followingId
+            }
         }
     })
 }
