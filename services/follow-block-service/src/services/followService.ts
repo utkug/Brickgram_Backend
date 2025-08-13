@@ -11,6 +11,17 @@ export const getUserFollows = async (userId: string) => {
     })
 }
 
+export const getFollowByUsers = async (followerId: string, followingId: string) => {
+    return await prisma.follows.findUnique({
+        where: {
+            follower_id_following_id: {
+                follower_id: followerId,
+                following_id: followingId
+            }
+        }
+    })
+}
+
 export const getFollowById = async (followId: string) => {
     return await prisma.follows.findUnique({
         where: {

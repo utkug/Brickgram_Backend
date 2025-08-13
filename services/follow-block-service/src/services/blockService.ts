@@ -18,6 +18,17 @@ export const getUserBlokcs = async (userId: string) => {
     })
 }
 
+export const getBlockByUsers = async (blockerId: string, blockedId: string) => {
+    return await prisma.blocks.findUnique({
+        where: {
+           blocker_id_blocked_id : {
+                blocker_id: blockerId,
+                blocked_id: blockedId
+            }
+        }
+    })
+}
+
 export const createUserBlock = async (blockerId: string, blockedId: string) => {
     return await prisma.blocks.create({
         data: {
@@ -28,7 +39,7 @@ export const createUserBlock = async (blockerId: string, blockedId: string) => {
 }
 
 export const deleteUserBlock = async (blockerId: string, blockedId: string) => {
-    return await prisma.blocks.findUnique({
+    return await prisma.blocks.delete({
         where: {
             blocker_id_blocked_id: {
                 blocker_id: blockerId,

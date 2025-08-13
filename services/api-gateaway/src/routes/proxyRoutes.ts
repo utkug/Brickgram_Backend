@@ -13,4 +13,7 @@ export const useProxies = (app: Express) => {
     
     // Follow
     app.use('/api/follow', createProxy('http://localhost:3004'))
+
+    // Block
+    app.use('/api/block', createProxy('http://localhost:3004'))
 } 

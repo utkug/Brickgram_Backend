@@ -15,6 +15,18 @@ export const createProxy = (targetUrl: string) => {
             proxyReqOpts.headers['x-user-id'] = user.id
         }
         return proxyReqOpts
-       }
+       },
+    //    userResDecorator: async (proxyRes, proxyResData, userReq, userRes) => {
+    //     try {
+    //         const json = JSON.parse(proxyResData)
+    //         return {
+    //             succes: proxyRes.statusCode && proxyRes.statusCode < 400,
+    //             message: json.message || null,
+    //             data: json.data || null
+    //         }
+    //     } catch (error) {
+    //         return proxyResData
+    //     }
+    //    }
     })
 }
