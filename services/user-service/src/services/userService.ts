@@ -24,11 +24,14 @@ export const getUserById = async (id: string) => {
     return await prisma.users.findUnique({
         where: {
             id
+        },
+        omit: {
+            password: true
         }
     })
 }
 
-export const searchUsersByUsername = async (query: string, take: number) => {
+export const searchUsersByUsername = async (query: string, take?: number) => {
     return await prisma.users.findMany({
         where: {
             username: {
@@ -38,7 +41,7 @@ export const searchUsersByUsername = async (query: string, take: number) => {
         omit: {
             password: true
         },
-        take: take
+        take
     })
 }
 

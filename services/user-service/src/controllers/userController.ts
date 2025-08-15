@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { createUser, getUserByEmail, getUserByUsername, searchUsersByUsername, updateUser } from "../services/userService"
+import { createUser, getUserByEmail, getUserById, getUserByUsername, searchUsersByUsername, updateUser } from "../services/userService"
 import { CreateUserInput } from "../models/models"
 
 export const getUserByEmailHandler = async (req: Request, res: Response) => {
@@ -25,7 +25,7 @@ export const getUserByUsernameHandler = async (req: Request, res: Response) => {
 export const getUserByIdHandler = async (req: Request, res: Response) => {
     try {
         const id = req.params.id
-        const user = await getUserByEmail(id)
+        const user = await getUserById(id)
         res.status(200).json(user)
     } catch (error) {
         res.status(500).json({message: "failed", error: error})
