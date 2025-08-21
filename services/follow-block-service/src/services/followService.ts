@@ -1,4 +1,5 @@
 import { FollowStatus, PrismaClient } from "@brickgram/shared-prisma"
+import { kafkaProducer } from "../kafka/producer"
 
 const prisma = new PrismaClient()
 
@@ -12,7 +13,7 @@ export const getUserFollows = async (userId: string) => {
 }
 
 export const getFollowByUsers = async (followerId: string, followingId: string) => {
-    return await prisma.follows.findUnique({
+    const follow = await prisma.follows.findUnique({
         where: {
             follower_id_following_id: {
                 follower_id: followerId,
@@ -31,13 +32,29 @@ export const getFollowById = async (followId: string) => {
 }
 
 export const createUserFollow = async (followerId: string, followingId: string, status: FollowStatus) => {
-    return await prisma.follows.create({
+    const follow = await prisma.follows.create({
         data: {
             follower_id: followerId,
             following_id: followingId,
             status
         }
     })
+    await kafkaProducer.send({
+        topic: "notifications",
+        messages: [
+            {
+                value: JSON.stringify({
+                    type: "FOLLOW_CREATED",
+                    message: status==="PENDING" ? "FOLLOW_REQUEST" : "FOLLOW_ACCEPTED",
+                    data: {
+                        userId: followingId,
+                        senderId: followerId
+                    }
+                })
+            }
+        ]
+    })
+    return follow
 }
 
 export const updataFollowStatus = async (userId: string, followId: string, status: FollowStatus) => {

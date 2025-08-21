@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import followRouter from './routes/followRoute'
 import blockRouter from './routes/blockRoutes'
+import { connectProducer } from './kafka/producer'
 
 dotenv.config()
 
@@ -18,6 +19,7 @@ app.use('/api/block', blockRouter)
 const PORT = process.env.PORT || 3004
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  await connectProducer()
   console.log(`Server is running on http://localhost:${PORT}`);
 })

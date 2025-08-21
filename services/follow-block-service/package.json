@@ -10,6 +10,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@brickgram/shared-prisma": "github:utkug/brickgram_shared_prisma"
+    "@brickgram/shared-prisma": "github:utkug/brickgram_shared_prisma",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.14",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
   }
 }
