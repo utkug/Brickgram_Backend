@@ -1,0 +1,67 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "API Gateaway",
+            "type": "shell",
+            "command": "npx tsx src/index.ts",
+            "options": {
+                "cwd": "${workspaceFolder}/Backend/services/api-gateaway"
+            }
+        },
+        {
+            "label": "Lego Service",
+            "type": "shell",
+            "command": "npx tsx src/index.ts",
+            "options": {
+                "cwd": "${workspaceFolder}/Backend/services/lego-service"
+            }
+        },
+        {
+            "label": "User Service",
+            "type": "shell",
+            "command": "npx tsx src/index.ts",
+            "options": {
+                "cwd": "${workspaceFolder}/Backend/services/user-service"
+            }
+        },
+        {
+            "label": "Auth Service",
+            "type": "shell",
+            "command": "npx tsx src/index.ts",
+            "options": {
+                "cwd": "${workspaceFolder}/Backend/services/auth-service"
+            }
+        },
+        {
+            "label": "Follow Block Service",
+            "type": "shell",
+            "command": "npx tsx src/index.ts",
+            "options": {
+                "cwd": "${workspaceFolder}/Backend/services/follow-block-service"
+            }
+        },
+        {
+            "label": "Notification Service",
+            "type": "shell",
+            "command": "npx tsx src/index.ts",
+            "options": {
+                "cwd": "${workspaceFolder}/Backend/services/notification-service"
+            }
+        },
+        {
+            "label": "Frontend Service",
+            "type": "shell",
+            "command": "npm run dev",
+            "options": {
+                "cwd": "${workspaceFolder}/Frontend/Brickgram-Frontend"
+            }
+        },
+        {
+            "label": "Run All",
+            "dependsOn": ["API Gateaway", "User Service", "Auth Service", "Follow Block Service", "Notification Service"]
+        }
+    ]
+}
