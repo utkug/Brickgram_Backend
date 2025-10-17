@@ -4,8 +4,8 @@ import { signToken, verifyToken } from '../lib/jwt'
 
 export const loginHandler = async (req: Request, res: Response) => {
     try {
-        const { email, password } = req.body
-        const result = await authService.login(email, password)
+        const { identifier, password } = req.body
+        const result = await authService.login(identifier, password)
         res.json(result)
     } catch (error) {
         res.status(401).json({error: "Login failed"})

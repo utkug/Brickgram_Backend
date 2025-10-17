@@ -10,11 +10,11 @@ const prisma = new PrismaClient()
 
 const USER_SERVICE_URL = process.env.USER_SERVICE_URL || "http://localhost:3002" 
 
-export const login = async (email: string, password: string) => {
+export const login = async (identifier: string, password: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const isEmail = emailRegex.test(identifier)
     const user = await prisma.users.findUnique({
-        where: {
-            email
-        },
+        where: isEmail ? { email: identifier } : { username: identifier },
         select: {
             email: true,
             password: true,
