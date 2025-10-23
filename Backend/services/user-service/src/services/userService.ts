@@ -4,18 +4,35 @@ import { PrismaClient } from "@brickgram/shared-prisma"
 
 const prisma = new PrismaClient()
 
-export const getUserByUsername = async (username: string) => {
-    return await prisma.users.findUnique({
+export const getUserByUsername = async (username: string, currentUserId: string) => {
+    const user = await prisma.users.findUnique({
         where: {
             username: username
+        },
+        omit: {
+            password: true
         }
     })
+
+    if (!user) return null
+
+    const [followersCount, followingCount, isFollowing, isFollowedBy] = await Promise.all([
+        prisma.follows.count({ where: { following_id: user.id, status: "ACCEPTED" } }),
+        prisma.follows.count({ where: { follower_id: user.id, status: "ACCEPTED" } }),
+        prisma.follows.findFirst({ where: { follower_id: currentUserId, following_id: user.id } }), //ben onu takip ediyor muyum
+        prisma.follows.findFirst({ where: { follower_id: user.id, following_id: currentUserId } }) //o bizi takip ediyor mu
+    ])
+    console.log("c: " + currentUserId +"and u: " + user.id)
+    return { ...user, followersCount, followingCount, isFollowing: !!isFollowing, isFollowedBy: !!isFollowedBy, isOwnProfile: currentUserId === user.id }
 }
 
 export const getUserByEmail = async (email: string) => {
     return await prisma.users.findUnique({
         where: {
             email
+        },
+        omit: {
+            password: true
         }
     })
 }

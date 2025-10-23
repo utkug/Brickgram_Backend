@@ -8,8 +8,12 @@ dotenv.config()
 
 const prisma = new PrismaClient()
 
-const USER_SERVICE_URL = process.env.USER_SERVICE_URL || "http://localhost:3002" 
-
+export interface CreateUserInput {
+    username: string
+    name: string
+    email: string
+    password: string
+}
 export const login = async (identifier: string, password: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const isEmail = emailRegex.test(identifier)
@@ -32,4 +36,17 @@ export const login = async (identifier: string, password: string) => {
 
     const token = signToken({id: user.id, username: user.username, role: user.role})
     return { token }
+}
+
+export const createUser = async (data: CreateUserInput) => {
+    const hashedPassword = await bcrypt.hash(data.password, 10)
+    //data.password = hashedPassword
+    const registeredUser = await prisma.users.create({
+        data: {
+            ...data,
+            password: hashedPassword
+        }
+    })
+    const token = signToken({id: registeredUser.id, username: registeredUser.username, role: registeredUser.role})
+    return { ...registeredUser, token }
 }

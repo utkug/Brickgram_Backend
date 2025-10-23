@@ -14,8 +14,9 @@ export const getUserByEmailHandler = async (req: Request, res: Response) => {
 
 export const getUserByUsernameHandler = async (req: Request, res: Response) => {
     try {
+        const currentUserId = req.headers["x-user-id"] as string
         const username = req.params.username
-        const user = await getUserByEmail(username)
+        const user = await getUserByUsername(username, currentUserId)
         res.status(200).json(user)
     } catch (error) {
         res.status(500).json({message: "failed", error: error})
@@ -58,7 +59,8 @@ export const createUserHandler = async (req: Request, res: Response) => {
 
 export const updateUserHandler = async (req: Request, res: Response) => {
     try {
-        const userId = (req as any).user?.id
+        const userId = req.headers["x-user-id"] as string
+        console.log(userId)
         const updateData = req.body
 
         const updatedUser = await updateUser(userId, updateData)

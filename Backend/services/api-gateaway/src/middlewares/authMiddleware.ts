@@ -21,11 +21,11 @@ export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: N
 
     const isPublic = publicRoutes.some(r => r.method === req.method && r.path.test(req.path))
 
-    if (isPublic) return next()
 
     const authHeader = req.headers.authorization
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        if (isPublic) return next()
         return res.status(401).json({ message: "Unauthorized" })
     }
 

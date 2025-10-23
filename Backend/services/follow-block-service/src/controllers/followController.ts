@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { createUserFollow, deleteUserFollow, deleteUserFollowById, getFollowById, getMyPendingList, getUserFollows, updataFollowStatus } from "../services/followService"
+import { createUserFollow, deleteUserFollow, deleteUserFollowById, getFollowById, getMyPendingList, getUserFollowers, getUserFollowings, getUserFollows, updataFollowStatus } from "../services/followService"
 import { getBlockByUsers } from "../services/blockService"
 import axios from "axios"
 import { FollowStatus } from "@brickgram/shared-prisma"
@@ -17,6 +17,30 @@ export const getUserFollowsHandler = async (req: Request, res: Response) => {
         res.status(200).json({ message: "Follows retrieved successfully.", data: follows })
     } catch (error) {
         res.status(500).json({ message: "Failed to retrieve follows.", error })
+    }
+}
+
+//Oct
+export const getUserFollowersHandler = async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.userId
+        if (!userId) return res.status(400).json({ message: "User ID is required." })
+        const followers = await getUserFollowers(userId)
+        return res.status(200).json(followers)
+    } catch (error) {
+        
+    }
+}
+
+//Oct
+export const getUserFollowingssHandler = async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.userId
+        if (!userId) return res.status(400).json({ message: "User ID is required." })
+        const followers = await getUserFollowings(userId)
+        return res.status(200).json(followers)
+    } catch (error) {
+        
     }
 }
 

@@ -14,6 +14,9 @@ export const createProxy = (targetUrl: string) => {
         if (user) {
             proxyReqOpts.headers['x-user-id'] = user.id
         }
+        else {
+            console.log("⚠️  No user attached to request — x-user-id not set")
+        }
         return proxyReqOpts
        },
     //    userResDecorator: async (proxyRes, proxyResData, userReq, userRes) => {

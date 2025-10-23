@@ -12,6 +12,32 @@ export const getUserFollows = async (userId: string) => {
     })
 }
 
+//Oct
+export const getUserFollowers = async (userId: string) => {
+    return await prisma.follows.findMany({
+        where: {
+            following_id: userId,
+            status: 'ACCEPTED'
+        },
+        include: {
+            follower: true
+        }
+    })
+}
+
+//Oct
+export const getUserFollowings = async (userId: string) => {
+    return await prisma.follows.findMany({
+        where: {
+            follower_id: userId,
+            status: 'ACCEPTED'
+        },
+        include: {
+            following: true
+        }
+    })
+}
+
 export const getFollowByUsers = async (followerId: string, followingId: string) => {
     const follow = await prisma.follows.findUnique({
         where: {

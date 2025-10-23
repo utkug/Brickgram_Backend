@@ -1,6 +1,14 @@
 import { Request, Response } from 'express'
 import * as authService from '../services/authService'
 import { signToken, verifyToken } from '../lib/jwt'
+import { createUser } from '../services/authService'
+
+export interface CreateUserInput {
+    username: string
+    name: string
+    email: string
+    password: string
+}
 
 export const loginHandler = async (req: Request, res: Response) => {
     try {
@@ -19,5 +27,18 @@ export const verifyTokenHandler = async (req: Request, res: Response) => {
         res.status(200).json(result)
     } catch (error) {
      res.status(500).json({message: "invalid"})   
+    }
+}
+
+export const registerHandler = async (req: Request, res: Response) => {
+    try {
+        const user: CreateUserInput = req.body
+        const createdUser = await createUser(user)
+
+        const { password, ...userWithoutPassword } = createdUser
+        res.status(201).json(userWithoutPassword)
+    }
+    catch (err) {
+        res.status(500).json({message: "Could not create user", error: err})
     }
 }

@@ -3,6 +3,8 @@ import Index from "./pages/index";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import ChooseAvatar from "./pages/ChooseAvatar";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
@@ -13,7 +15,9 @@ function App() {
         </ProtectedRoute>
       } path="/" />
       <Route element={<RegisterPage />} path="/register" />
+      <Route element={<ChooseAvatar />} path="/avatar" />
       <Route element={<LoginPage />} path="/login" />
+      <Route element={<UserProfile />} path="/profile/:username" />
     </Routes>
   );
 }
