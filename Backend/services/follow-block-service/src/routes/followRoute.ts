@@ -4,12 +4,12 @@ import { followUser, getFollowByIdHandler, getMyPendingListHandler, getUserFollo
 const followRouter = Router()
 
 // localhost:3000/api/follow/...
-followRouter.get('/pending', getMyPendingListHandler)
-followRouter.get('/:followId', getFollowByIdHandler)
 followRouter.get('/user/:userId', getUserFollowsHandler)
+
 followRouter.delete('/:followingId', unfollowUser)
 followRouter.put('/:followId/status', updateFollowRequest)
-
+//followRouter.get('/id/:followId', getFollowByIdHandler)
+followRouter.get('/pending', getMyPendingListHandler)
 followRouter.get('/:userId/followers', getUserFollowersHandler)
 followRouter.get('/:userId/followings', getUserFollowingssHandler)
 followRouter.post('/:followingId', followUser)

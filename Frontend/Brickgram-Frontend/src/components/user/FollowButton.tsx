@@ -1,36 +1,37 @@
 import { followUser, unfollowUser } from '@/api/user'
-import { Button } from '@heroui/react'
-import { IconUserPlus, IconUserMinus, IconUserEdit } from '@tabler/icons-react'
+import { Button, useDisclosure } from '@heroui/react'
+import { IconUserPlus, IconUserMinus, IconUserEdit, IconClock } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
+import EditProfile from '../EditProfile'
 
 interface FollowButtonInput {
-  isFollowing?: boolean
-  isFollowedBy?: boolean
-  isOwnProfile?: boolean
-  userId?: string
+  user?: User | null
   onFollowChange?: (newFollowing: boolean) => void
 }
 
+function FollowButton({user, onFollowChange }: FollowButtonInput) {
+  const [isFollowing, setIsFollowing] = useState(user?.isFollowing)
+  const {isOpen, onOpen,onOpenChange} = useDisclosure();
 
-
-function FollowButton({userId, isFollowing: initialIsFollowing, isFollowedBy, isOwnProfile, onFollowChange }: FollowButtonInput) {
-  const [isFollowing, setIsFollowing] = useState(initialIsFollowing)
 
   useEffect(() => {
-    if (initialIsFollowing !== undefined) setIsFollowing(initialIsFollowing)
-  }, [initialIsFollowing])
+    if (user?.isFollowing !== undefined) setIsFollowing(user?.isFollowing)
+  }, [user?.isFollowing, user?.followStatus])
 
-  console.log(initialIsFollowing)
+  console.log(user?.isFollowing)
  
   const handleFollowToggle = async () => {
     try {
       if(isFollowing) {
-        await unfollowUser(userId!)
+        await unfollowUser(user?.id!)
         setIsFollowing(false)
         onFollowChange?.(false)
       }
-      else{
-        await followUser(userId!)
+      else if(user?.isOwnProfile) { 
+        onOpen()
+      }
+      else if(!isFollowing){
+        await followUser(user?.id!)
         setIsFollowing(true)
         onFollowChange?.(true)
       }
@@ -39,6 +40,21 @@ function FollowButton({userId, isFollowing: initialIsFollowing, isFollowedBy, is
     }
   }
 
+  const getFollowButtonConfig = () => {
+    if (user?.isOwnProfile) {
+      return { icon: <IconUserEdit />, label: "Edit" };
+    }
+    switch (user?.followStatus) {
+      case "ACCEPTED":
+        return { icon: <IconUserMinus />, label: "Unfollow" };
+      case "PENDING":
+        return { icon: <IconClock />, label: "Pending" };
+      default:
+        return { icon: <IconUserPlus />, label: "Follow" };
+    }
+  };
+
+  const { icon, label } = getFollowButtonConfig()
   return (
     <div>
         <Button
@@ -47,12 +63,11 @@ function FollowButton({userId, isFollowing: initialIsFollowing, isFollowedBy, is
           variant="bordered"
           color="warning"
           onPress={handleFollowToggle}
-          startContent={
-            isOwnProfile ? <IconUserEdit /> :  (isFollowing ? <IconUserMinus /> : <IconUserPlus />)
-          }
+          startContent={icon}
         >
-          {isOwnProfile ? "Edit" :  (isFollowing ? "Unfollow" : "Follow")}
+          {label}
         </Button>
+        <EditProfile currentUser={user} isOpen={isOpen} onOpenChange={onOpenChange} />
     </div>
   )
 }

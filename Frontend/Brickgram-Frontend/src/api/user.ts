@@ -53,12 +53,37 @@ export const unblockUser = async () => {
 
 export const getUserFollowers = async (userId: string) => {
     const res = await fetch(BASE_URL + "/api/follow/" + userId + "/followers")
-    const data = res.json()
+    const data = await res.json()
     return data
 }
 
 export const getUserFollowings = async (userId: string) => {
     const res = await fetch(BASE_URL + "/api/follow/" + userId + "/followings")
-    const data = res.json()
+    const data = await res.json()
+    return data
+}
+
+export const getUserFollowPendingList = async () => {
+    const token = localStorage.getItem("token")
+    const res = await fetch(BASE_URL + "/api/follow/pending", {
+        method: "GET",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
+    const data = await res.json()
+    return data
+}
+
+//Accept / Decline
+export const updateFollow = async (followId: string, status: string) => {
+    const token = localStorage.getItem("token")
+    const res = await fetch(BASE_URL + "/api/follow/" + followId + "/status", {
+        method: "PUT",
+        headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({status})
+    })
+    const data = await res.json()
     return data
 }

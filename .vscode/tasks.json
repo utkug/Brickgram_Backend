@@ -82,6 +82,20 @@
                 "Follow Block Service",
                 "Notification Service"
             ]
+        },
+        {
+            "label": "Run Custom",
+            "dependsOrder": "parallel",
+            "dependsOn": [
+                "Start Zookeeper",
+                "Start Kafka",
+                "API Gateway",
+                "User Service",
+                "Auth Service",
+                "Follow Block Service",
+                "Notification Service",
+                "Frontend Service"
+            ]
         }
     ]
 }

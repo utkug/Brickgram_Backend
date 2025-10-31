@@ -1,5 +1,5 @@
 import { getUserFollowers, getUserFollowings } from '@/api/user';
-import { Modal, ModalContent, ModalHeader, ModalBody, Avatar } from '@heroui/react';
+import { Modal, ModalContent, ModalHeader, ModalBody, Avatar, Divider } from '@heroui/react';
 import React, { useEffect, useState } from 'react'
 
 interface Followings {
@@ -26,9 +26,9 @@ function FollowingsCard({userId, isOpen, onOpenChange}: FollowingsCardInput) {
             const fetchData = async () => {
                 try {
                     const data = await getUserFollowings(userId!)
-                    setFollowings(data.map((item: any) => item.follower))   
+                    setFollowings(data.map((item: any) => item.following))   
                 } catch (error) {
-                    
+                    console.error(error)
                 }
             }
             fetchData() 

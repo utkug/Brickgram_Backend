@@ -7,21 +7,8 @@ import UserStats from "@/components/user/UserStats";
 import { Image, Divider } from "@heroui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { IconLock } from "@tabler/icons-react";
 
-interface User {
-  id: string
-  username: string
-  name: string
-  bio?: string
-  location?: string
-  profile_picture?: string
-  is_verified?: boolean
-  followersCount: number
-  followingCount: number
-  isFollowing: boolean
-  isFollowedBy: boolean
-  isOwnProfile: boolean
-}
 
 function UserProfile() {
   const { username } = useParams()
@@ -45,10 +32,12 @@ function UserProfile() {
         <Image className="rounded-none h-45 w-screen" src="./snoppyX.jpg" />
         <UserProfileHeader profile_picture={user?.profile_picture} />
         <UserInfo username={user?.username} name={user?.name} bio={user?.bio} location={user?.location} is_verified={user?.is_verified}/> 
-        <FollowButton onFollowChange={(newFollowing: boolean) => {setUser((prev) => prev ? {...prev, isFollowing: newFollowing, followersCount: prev.followersCount + (newFollowing ? 1 : -1)}: prev)}} userId={user?.id} isFollowedBy={user?.isFollowedBy} isOwnProfile={user?.isOwnProfile} isFollowing={user?.isFollowing} />
+        <FollowButton onFollowChange={(newFollowing: boolean) => {setUser((prev) => prev ? {...prev, isFollowing: newFollowing, followersCount: prev.followersCount + (newFollowing ? 1 : -1)}: prev)}} user={user} />
         <UserStats followersCount={user?.followersCount} followingCount={user?.followingCount} userId={user?.id}/>
         <Divider className="mt-5" />
-        <Post />
+        { (!user?.isOwnProfile && user?.is_private && user.isFollowing && !(user.followStatus === 'ACCEPTED')) ? (
+          <IconLock />
+        ) : (<Post />)}
       </div>
     </div>
   );

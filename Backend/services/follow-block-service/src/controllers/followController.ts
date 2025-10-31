@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { createUserFollow, deleteUserFollow, deleteUserFollowById, getFollowById, getMyPendingList, getUserFollowers, getUserFollowings, getUserFollows, updataFollowStatus } from "../services/followService"
+import { createUserFollow, deleteUserFollow, deleteUserFollowById, getFollowById, getMyPendingList, getUserFollowers, getUserFollowings, getUserFollows, updateFollowStatus } from "../services/followService"
 import { getBlockByUsers } from "../services/blockService"
 import axios from "axios"
 import { FollowStatus } from "@brickgram/shared-prisma"
@@ -106,7 +106,7 @@ export const updateFollowRequest = async (req: Request, res: Response) => {
             return res.status(200).json({ message: "Follow request declined. The follow request has deleted", data: deletedFollow})
         }
         
-        const updatedFollowStatus = await updataFollowStatus(userId, followId, status)
+        const updatedFollowStatus = await updateFollowStatus(userId, followId, status)
         res.status(200).json({ message: "Follow request updated successfully.", data: updatedFollowStatus })
     } catch (error) {
         res.status(500).json({ message: "Failed to accept the follow request.", error })
@@ -139,7 +139,7 @@ export const getMyPendingListHandler = async (req: Request, res: Response) => {
 
         const pendingList = await getMyPendingList(userId)
 
-        res.status(200).json({ message: "Pending list retrieved successfully.", data: pendingList })
+        res.status(200).json(pendingList)
     } catch (error) {
         res.status(500).json({ message: "Failed to retrieve pending list.", error })
     }

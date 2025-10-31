@@ -83,7 +83,7 @@ export const createUserFollow = async (followerId: string, followingId: string, 
     return follow
 }
 
-export const updataFollowStatus = async (userId: string, followId: string, status: FollowStatus) => {
+export const updateFollowStatus = async (userId: string, followId: string, status: FollowStatus) => {
     return await prisma.follows.update({
         where: {
             id: followId,
@@ -117,8 +117,23 @@ export const deleteUserFollowById = async (id: string) => {
 export const getMyPendingList = async (userId: string) => {
     return await prisma.follows.findMany({
         where: {
-            follower_id: userId,
+            following_id: userId,
             status: "PENDING"
-        }
+        },
+        select: {
+            id: true,
+            follower_id: true,
+            following_id: true,
+            created_at: true,
+            status: true,
+            follower: {
+                select: {
+                id: true,
+                username: true,
+                name: true,
+                profile_picture: true,
+                },
+            },
+            }
     })
 }
