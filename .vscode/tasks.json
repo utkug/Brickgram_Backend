@@ -54,6 +54,14 @@
             }
         },
         {
+            "label": "Post Service",
+            "type": "shell",
+            "command": "npx tsx src/index.ts",
+            "options": {
+                "cwd": "${workspaceFolder}/Backend/services/post-service"
+            }
+        },
+        {
             "label": "Frontend Service",
             "type": "shell",
             "command": "npm run dev",
@@ -88,13 +96,13 @@
             "dependsOrder": "parallel",
             "dependsOn": [
                 "Start Zookeeper",
-                "Start Kafka",
                 "API Gateway",
                 "User Service",
                 "Auth Service",
-                "Follow Block Service",
                 "Notification Service",
-                "Frontend Service"
+                "Frontend Service",
+                "Start Kafka",
+                "Follow Block Service",
             ]
         }
     ]

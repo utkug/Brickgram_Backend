@@ -1,18 +1,26 @@
 import Post from '@/components/Post'
+import PostingPost from '@/components/PostingPost'
+import UserContentCard from '@/components/UserContentCard'
 import { Textarea } from '@heroui/react'
 import React from 'react'
 
 function MainPage() {
   return (
-    <div className='flex flex-col items-center min-h-screen bg-background text-foreground'>
-        <div className='flex flex-col items-center w-full md:w-1/2 min-h-screen border border-b-0 border-gray-700'>
-            <Textarea />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
+    <div className='w-full'>
+        <div className='w-full p-4 border-b border-gray-700'>
+            <PostingPost type='post'/>
         </div>
-    </div>
+<UserContentCard
+  type="post"
+  name="Utku Gülmez"
+  username="Utkugulmez07"
+  text="Just finished building my LEGO X-Wing 🚀✨"
+  avatar="./LSW_PhotoIcons_KitFisto.png"
+  time="2h"
+  fullTime="Nov 4, 2025, 14:42"
+/>
+
+        </div>
   )
 }
 

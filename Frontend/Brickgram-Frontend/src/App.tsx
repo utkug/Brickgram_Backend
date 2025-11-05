@@ -7,6 +7,8 @@ import ChooseAvatar from "./pages/ChooseAvatar";
 import UserProfile from "./pages/UserProfile";
 import MainPage from "./pages/MainPage";
 import MyPendingList from "./pages/MyPendingList";
+import DefaultLayout from "./layouts/DefaultLayout";
+import PostDetails from "./pages/PostDetails";
 
 function App() {
   return (
@@ -16,12 +18,14 @@ function App() {
           <Index />
         </ProtectedRoute>
       } path="/" />
-      <Route element={<MainPage />} path="/main" />
+      <Route element={<DefaultLayout children={<MainPage />}  />} path="/main" />
       <Route element={<RegisterPage />} path="/register" />
       <Route element={<ChooseAvatar />} path="/avatar" />
       <Route element={<LoginPage />} path="/login" />
       <Route element={<UserProfile />} path="/profile/:username" />
       <Route element={<MyPendingList/>} path="/follow-requests" />
+      {/* <Route element={<DefaultLayout/>} path="/default" /> */}
+      <Route element={<DefaultLayout children={<PostDetails />} />} path="/post/:postId" />
     </Routes>
   );
 }

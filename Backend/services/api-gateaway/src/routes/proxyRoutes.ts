@@ -16,4 +16,13 @@ export const useProxies = (app: Express) => {
 
     // Block
     app.use('/api/block', createProxy('http://localhost:3004'))
+
+    // Post
+    app.use('/api/posts', createProxy('http://localhost:3005'))
+
+    // Comment
+    app.use('/api/comments', createProxy('http://localhost:3005'))
+
+    // Like
+    app.use('/api/likes', createProxy('http://localhost:3005'))
 } 
