@@ -4,6 +4,8 @@ import { handleApiError } from "@/utils/handleApiError";
 import { Button, CircularProgress, Textarea } from "@heroui/react";
 import { IconPhotoUp, IconX } from "@tabler/icons-react";
 import React, { useEffect, useRef, useState } from "react";
+import { getCurrentUser } from "@/api/auth";
+import { useUserStore } from "@/store/userStore";
 
 interface PostingPostInput {
   type: "post" | "comment" | "reply";
@@ -28,6 +30,9 @@ function PostingPost({
   const [isLoading, setIsLoading] = useState(false);
   const wrapperRef = useRef<HTMLDivElement | null>(null); // dışarı tıklama takibi için
   const postMediaInputRef = useRef<HTMLInputElement | null>(null);
+
+  const user = useUserStore(state => state.user)
+  
 
   // 🔹 Debug: Log props on mount
   useEffect(() => {
@@ -145,7 +150,7 @@ function PostingPost({
         {/* Avatar */}
         <div className="flex-shrink-0">
           <img
-            src="/LSW_PhotoIcons_KitFisto.png"
+            src={user?.profile_picture}
             alt="User avatar"
             className={`rounded-full cursor-pointer ${
               isReply ? "w-8 h-8" : "w-12 h-12"

@@ -1,3 +1,5 @@
+const BASE_URL = "http://localhost:3000"
+
 export const login = async (identifier: string, password: string) => {
     const res = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
@@ -47,4 +49,14 @@ export const updateUser = async (updateData: any) => {
   }
 
   return data
+}
+
+export const getCurrentUser = async () => {
+    const res = await fetch(BASE_URL + '/api/users/current', {
+        method: 'GET',
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+    })
+    return await res.json()
 }

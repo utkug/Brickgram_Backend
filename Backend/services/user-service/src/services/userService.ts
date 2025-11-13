@@ -103,3 +103,18 @@ export const updateUser = async (userId: string, data: UpdateUserInput) => {
         }
     })
 }
+
+export const getCurrentUser = async (userId: string) => {
+    return await prisma.users.findUnique({
+        where: {
+            id: userId
+        },
+        select: {
+            id: true,
+            username: true,
+            name: true,
+            profile_picture: true,
+            is_verified: true
+        }
+    })
+}

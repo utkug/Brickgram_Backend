@@ -103,6 +103,7 @@
                 "Frontend Service",
                 "Start Kafka",
                 "Follow Block Service",
+                "Post Service"
             ]
         }
     ]
